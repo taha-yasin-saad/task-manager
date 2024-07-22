@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Create Task</h1>
+        <h1 class="my-4">Create Task</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

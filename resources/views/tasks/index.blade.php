@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="container">
-        <h1>Task List</h1>
+        <h1 class="my-4">Task List</h1>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <a href="{{ route('tasks.create') }}" class="btn btn-primary">Add Task</a>
+        <a href="{{ route('tasks.create') }}" class="btn btn-primary mb-3">Add Task</a>
 
-        <div class="mt-3">
+        <div class="form-group">
             <label for="projectFilter">Filter by Project:</label>
             <select id="projectFilter" class="form-control" onchange="filterTasks()">
                 <option value="">All Projects</option>
@@ -22,20 +22,28 @@
 
         <ul id="taskList" class="list-group mt-3">
             @foreach ($tasks as $task)
-                <li class="list-group-item" data-id="{{ $task->id }}" data-project-id="{{ $task->project_id }}">
-                    {{ $task->name }}
-                    <a href="{{ route('tasks.edit', $task->id) }}"
-                        class="btn btn-sm btn-secondary float-right ml-2">Edit</a>
-                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="float-right ml-2">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ $task->id }}"
+                    data-project-id="{{ $task->project_id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-grip-vertical" viewBox="0 0 16 16" style="cursor: grab;">
+                        <path
+                            d="M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                    </svg>
+                    <span>{{ $task->name }}</span>
+                    <div>
+                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </li>
             @endforeach
         </ul>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
     <script>
         function filterTasks() {
             var projectId = document.getElementById('projectFilter').value;
@@ -50,28 +58,27 @@
             });
         }
 
+        document.addEventListener('DOMContentLoaded', function() {
+            new Sortable(document.getElementById('taskList'), {
+                animation: 150,
+                onEnd: function(evt) {
+                    var order = [];
+                    document.querySelectorAll('#taskList li').forEach(function(task, index) {
+                        order.push(task.getAttribute('data-id'));
+                    });
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     new Sortable(document.getElementById('taskList'), {
-        //         animation: 150,
-        //         onEnd: function(evt) {
-        //             var order = [];
-        //             document.querySelectorAll('#taskList li').forEach(function(task, index) {
-        //                 order.push(task.getAttribute('data-id'));
-        //             });
-
-        //             fetch('{{ route('tasks.reorder') }}', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //                 },
-        //                 body: JSON.stringify({
-        //                     tasks: order
-        //                 })
-        //             });
-        //         }
-        //     });
-        // });
+                    fetch(`{{ route('tasks.reorder') }}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            tasks: order
+                        })
+                    });
+                }
+            });
+        });
     </script>
 @endsection

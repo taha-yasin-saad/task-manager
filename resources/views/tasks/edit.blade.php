@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Edit Task</h1>
+        <h1 class="my-4">Edit Task</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -26,7 +26,8 @@
                 <select class="form-control" id="project_id" name="project_id" required>
                     @foreach ($projects as $project)
                         <option value="{{ $project->id }}" {{ $project->id == $task->project_id ? 'selected' : '' }}>
-                            {{ $project->name }}</option>
+                            {{ $project->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>

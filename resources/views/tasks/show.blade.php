@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Details</title>
-</head>
-<body>
-    <h1>Task Details</h1>
-    <p><strong>Name:</strong> {{ $task->name }}</p>
-    <p><strong>Priority:</strong> {{ $task->priority }}</p>
-    <p><strong>Created At:</strong> {{ $task->created_at }}</p>
-    <p><strong>Updated At:</strong> {{ $task->updated_at }}</p>
+@extends('layouts.app')
 
-    <a href="{{ route('tasks.index') }}">Back to Task List</a>
-</body>
-</html>
+@section('content')
+<div class="container">
+    <h1 class="my-4">Task Details</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ $task->name }}</h5>
+            <p class="card-text"><strong>Priority:</strong> {{ $task->priority }}</p>
+            <p class="card-text"><strong>Created At:</strong> {{ $task->created_at }}</p>
+            <p class="card-text"><strong>Updated At:</strong> {{ $task->updated_at }}</p>
+        </div>
+    </div>
+
+    <a href="{{ route('tasks.index') }}" class="btn btn-secondary mt-3">Back to Task List</a>
+</div>
+@endsection

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Create Project</h1>
+        <h1 class="my-4">Create Project</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -18,7 +18,7 @@
             @csrf
             <div class="form-group">
                 <label for="name">Project Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
             </div>
             <button type="submit" class="btn btn-primary">Create Project</button>
         </form>
