@@ -11,8 +11,8 @@
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/taha-yasin-saad/task_manager.git
-    cd task_manager
+    git clone https://github.com/taha-yasin-saad/task-manager.git
+    cd task-manager
     ```
 
 2. **Install dependencies:**
